@@ -11,6 +11,10 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.post('/', async (request, response) => {
   const { body } = request;
 
+  if (!body.username || !body.password) {
+    response.status(400).json({ error: 'username or password missing'})
+  }
+  
   const passwordHash = await bcrypt.hash(body.password, 10);
   const newUser = new User({
     email: body.email,

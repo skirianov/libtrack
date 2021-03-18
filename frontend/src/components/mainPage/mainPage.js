@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -30,12 +30,14 @@ const useStyles = makeStyles({
 });
 
 const MainPage = () => {
+  const [status, setStatus] = useState('');
   const classes = useStyles();
   const dispatch = useDispatch();
   const modalStatus = useSelector((state) => state.modal);
 
-  const showModal = () => {
+  const showModal = (event) => {
     dispatch(modalAction(!modalStatus));
+    setStatus(event.currentTarget.value);
   };
 
   return (
@@ -49,8 +51,14 @@ const MainPage = () => {
           >
             Welcome to libtrack
           </Typography>
-          <Button text="Log in" action={showModal} />
-          <ModalComponent showModal={showModal} modalStatus={modalStatus} />
+          <Button text="Log in" action={showModal} value="login" />
+          <Button text="sign up" action={showModal} value="register" />
+          <ModalComponent
+            showModal={showModal}
+            modalStatus={modalStatus}
+            component={status}
+            setStatus={setStatus}
+          />
         </div>
         <img src={home} alt="home page logo" className={classes.logo} />
       </Container>

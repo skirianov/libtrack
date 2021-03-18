@@ -12,10 +12,11 @@ const useStyles = makeStyles({
   root: {
     display: 'flex',
     justifyContent: 'center',
+    marginTop: '20px',
   },
 });
 
-const ButtonComponent = ({ text, action }) => {
+const ButtonComponent = ({ text, action, value }) => {
   const classes = useStyles();
 
   return (
@@ -25,6 +26,7 @@ const ButtonComponent = ({ text, action }) => {
         color="primary"
         onClick={action}
         type="submit"
+        value={value}
       >
         {text}
       </MyButon>

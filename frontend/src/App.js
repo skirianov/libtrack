@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import { Route, Switch, Redirect } from 'react-router';
 import './App.sass';
 
 import MainPage from './components/mainPage/mainPage';
-import store from './store';
+import Home from './components/home/Home';
+
+const loggedIn = window.localStorage.getItem('userLoggedIn')
+|| window.sessionStorage.getItem('sessionUser');
 
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <MainPage />
-      </Provider>
+      <Switch>
+        <Route path="/main">
+          <Home />
+        </Route>
+        <Route path="/">
+          {loggedIn ? <Redirect to="/main" /> : <MainPage />}
+        </Route>
+      </Switch>
     );
   }
 }

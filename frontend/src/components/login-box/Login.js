@@ -4,9 +4,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import Button from '../button/Button';
 import Progress from '../progress/Progress';
+import Notification from '../notification/Notification';
 
 import { loggedInUserAction } from './loggedInUserReducer';
 import loginService from './loginService';
@@ -21,9 +23,12 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
+  const [remember, setRemember] = useState(false);
+  const [message, setMessage] = useState('');
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleEmailChange = ({ target }) => {
     setEmail(target.value);
@@ -34,14 +39,34 @@ const Login = () => {
 
   const loginUser = async (event) => {
     event.preventDefault();
+    setShow(true);
     const user = {
       email,
       password,
     };
 
-    await loginService.loginUser(user);
-    console.log('user logged in');
-    setShow(!show);
+    const loggedInUser = await loginService.loginUser(user);
+    if (loggedInUser === '401') {
+      setMessage('Wrong email or password. Please try again');
+      setShow(false);
+    } else {
+      console.log(remember);
+      setMessage('Successfully logged in, redirecting...');
+      setShow(false);
+      setEmail('');
+      setPassword('');
+      if (remember) {
+        window.localStorage.setItem('userLoggedIn', JSON.stringify(loggedInUser));
+      } else {
+        window.sessionStorage.setItem('sessionUser', JSON.stringify(loggedInUser));
+      }
+      dispatch(loggedInUserAction(loggedInUser));
+      history.push('/main');
+    }
+  };
+
+  const rememberMe = () => {
+    setRemember(!remember);
   };
 
   return (
@@ -74,16 +99,12 @@ const Login = () => {
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
+          onChange={rememberMe}
         />
         <Button text="sign in" />
       </form>
       {show ? <Progress status={show} /> : null}
-      <p>
-        {'Dont have an account '}
-        <a href="google.com">
-          Sign Up
-        </a>
-      </p>
+      <Notification message={message} />
     </div>
   );
 };

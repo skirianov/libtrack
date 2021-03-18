@@ -9,8 +9,12 @@ const registerNewUser = async (user) => {
 };
 
 const loginUser = async (userCredentials) => {
-  const response = await axios.post(loginUrl, userCredentials);
-  return response.data;
+  try {
+    const response = await axios.post(loginUrl, userCredentials);
+    return response.data;
+  } catch (error) {
+    return '401';
+  }
 };
 
 const getAll = async () => {

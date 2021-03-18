@@ -10,6 +10,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import image from '/home/sergii/projects/dev/libtrack/frontend/src/images/login-img.png';
 
 import Login from '../login-box/Login';
+import Register from '../register-box/Register';
+import Registered from '../register-box/Registered';
 
 const useStyles = makeStyles({
   modal: {
@@ -25,8 +27,25 @@ const useStyles = makeStyles({
   },
 });
 
-const ModalComponent = ({ modalStatus, showModal }) => {
+const ModalComponent = ({
+  modalStatus,
+  showModal,
+  component,
+  setStatus,
+}) => {
   const classes = useStyles();
+  const ModalView = () => {
+    if (component === 'login') {
+      return <Login />;
+    }
+    if (component === 'register') {
+      return <Register setStatus={setStatus} />;
+    }
+    if (component === 'registered') {
+      return <Registered />;
+    }
+    return null;
+  };
 
   return (
     <Modal
@@ -56,7 +75,7 @@ const ModalComponent = ({ modalStatus, showModal }) => {
                 <img src={image} alt="main-page" className={classes.image} />
               </Grid>
               <Grid item xs={12} md={12} lg={10} xl={10}>
-                <Login />
+                <ModalView />
               </Grid>
             </Grid>
           </Container>
