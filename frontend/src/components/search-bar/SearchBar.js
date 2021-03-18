@@ -8,6 +8,8 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 
+import searchService from './searchService';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -64,10 +66,15 @@ const useStyles = makeStyles((theme) => ({
 
 const SearchBar = () => {
   const [query, setQuery] = useState('');
+  const [books, setBooks] = useState([]);
   const classes = useStyles();
 
-  const changeQuery = ({ target }) => {
+  const handleQuery = async ({ target }) => {
     setQuery(target.value);
+    const receivedBooks = await searchService.getBooks(query);
+    console.log(receivedBooks);
+    setBooks(receivedBooks);
+    console.log(books);
   };
 
   return (
@@ -96,7 +103,7 @@ const SearchBar = () => {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
-              onChange={changeQuery}
+              onChange={handleQuery}
             />
           </div>
         </Toolbar>
