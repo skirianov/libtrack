@@ -7,7 +7,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import SearchBarResults from './components/SearchBarResults';
 import searchService from './searchService';
@@ -64,13 +64,15 @@ const SearchBar = () => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   const handleQuery = async ({ target }) => {
     const toArray = target.value.split(' ');
     const toString = `${toArray.join('+')} `;
     const receivedBooks = await searchService.getBooks(toString);
+    console.log(receivedBooks);
     if (receivedBooks) {
-      const processedBooks = receivedBooks.map((book) => book.volumeInfo);
+      const processedBooks = receivedBooks.map((book) => book);
       setBooks(processedBooks);
       dispatch(searchAction(books));
     }
@@ -89,7 +91,8 @@ const SearchBar = () => {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Libtrack
+            Libtrack -
+            {` ${user.username}`}
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>

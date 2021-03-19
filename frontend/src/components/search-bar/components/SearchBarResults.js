@@ -11,9 +11,8 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     color: 'black',
     width: '100%',
-    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
-    border: '1px solid black',
+    border: `1px solid ${theme.palette.primary}`,
     display: 'block',
   },
   hidden: {
@@ -24,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 const SearchBarResults = () => {
   const classes = useStyles();
   const books = useSelector((state) => state.books);
-
   return (
     <List
       component="nav"
@@ -33,9 +31,9 @@ const SearchBarResults = () => {
     >
       {books
         ? books.map((book) => (
-          <div>
-            <ListItem button>
-              <ListItemText primary={book.title} />
+          <div key={book.id}>
+            <ListItem button onClick={() => console.log(book.id)}>
+              <ListItemText primary={book.volumeInfo.title} />
             </ListItem>
             <Divider />
           </div>
