@@ -50,7 +50,6 @@ const Login = () => {
       setMessage('Wrong email or password. Please try again');
       setShow(false);
     } else {
-      console.log(remember);
       setMessage('Successfully logged in, redirecting...');
       setShow(false);
       setEmail('');

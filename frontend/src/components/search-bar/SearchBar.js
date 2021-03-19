@@ -7,8 +7,11 @@ import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import { useDispatch } from 'react-redux';
 
+import SearchBarResults from './components/SearchBarResults';
 import searchService from './searchService';
+import { searchAction } from './searchreducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(1),
-      width: 'auto',
+      width: '30%',
     },
   },
   searchIcon: {
@@ -53,28 +56,24 @@ const useStyles = makeStyles((theme) => ({
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      width: '20ch',
-      '&:focus': {
-        width: '30ch',
-      },
-    },
   },
 }));
 
 const SearchBar = () => {
-  const [query, setQuery] = useState('');
   const [books, setBooks] = useState([]);
+
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const handleQuery = async ({ target }) => {
-    setQuery(target.value);
-    const receivedBooks = await searchService.getBooks(query);
-    console.log(receivedBooks);
-    setBooks(receivedBooks);
-    console.log(books);
+    const toArray = target.value.split(' ');
+    const toString = `${toArray.join('+')} `;
+    const receivedBooks = await searchService.getBooks(toString);
+    if (receivedBooks) {
+      const processedBooks = receivedBooks.map((book) => book.volumeInfo);
+      setBooks(processedBooks);
+      dispatch(searchAction(books));
+    }
   };
 
   return (
@@ -102,9 +101,11 @@ const SearchBar = () => {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
+              fullWidth
               inputProps={{ 'aria-label': 'search' }}
               onChange={handleQuery}
             />
+            {books ? <SearchBarResults /> : null}
           </div>
         </Toolbar>
       </AppBar>
