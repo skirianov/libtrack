@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBar = () => {
+const SearchBar = ({ showModal }) => {
   const [books, setBooks] = useState([]);
 
   const classes = useStyles();
@@ -70,7 +70,6 @@ const SearchBar = () => {
     const toArray = target.value.split(' ');
     const toString = `${toArray.join('+')} `;
     const receivedBooks = await searchService.getBooks(toString);
-    console.log(receivedBooks);
     if (receivedBooks) {
       const processedBooks = receivedBooks.map((book) => book);
       setBooks(processedBooks);
@@ -108,7 +107,7 @@ const SearchBar = () => {
               inputProps={{ 'aria-label': 'search' }}
               onChange={handleQuery}
             />
-            {books ? <SearchBarResults /> : null}
+            {books ? <SearchBarResults showModal={showModal} /> : null}
           </div>
         </Toolbar>
       </AppBar>

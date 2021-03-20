@@ -1,10 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+
+import { bookAction } from '../../book-addition/bookReducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,9 +22,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBarResults = () => {
+const SearchBarResults = ({ showModal }) => {
   const classes = useStyles();
   const books = useSelector((state) => state.books);
+
+  const dispatch = useDispatch();
+
   return (
     <List
       component="nav"
@@ -32,7 +37,7 @@ const SearchBarResults = () => {
       {books
         ? books.map((book) => (
           <div key={book.id}>
-            <ListItem button onClick={() => console.log(book.id)}>
+            <ListItem button onClick={() => { showModal(); dispatch(bookAction(book)); }}>
               <ListItemText primary={book.volumeInfo.title} />
             </ListItem>
             <Divider />

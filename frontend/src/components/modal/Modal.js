@@ -12,18 +12,15 @@ import image from '/home/sergii/projects/dev/libtrack/frontend/src/images/login-
 import Login from '../login-box/Login';
 import Register from '../register-box/Register';
 import Registered from '../register-box/Registered';
+import BookAddition from '../book-addition/bookAddition';
 
 const useStyles = makeStyles({
   modal: {
-    display: 'flex',
     margin: 'auto',
     width: '30%',
     height: '70%',
     border: 'none',
     outline: 'none',
-  },
-  image: {
-    width: '100%',
   },
 });
 
@@ -43,6 +40,9 @@ const ModalComponent = ({
     }
     if (component === 'registered') {
       return <Registered />;
+    }
+    if (component === 'book-adding') {
+      return <BookAddition />;
     }
     return null;
   };
@@ -69,11 +69,8 @@ const ModalComponent = ({
               direction="column"
               alignItems="center"
               justify="center"
-              style={{ minHeight: '60vh' }}
+              style={{ minHeight: '70vh' }}
             >
-              <Grid item xs={12} md={12} lg={10} xl={10}>
-                <img src={image} alt="main-page" className={classes.image} />
-              </Grid>
               <Grid item xs={12} md={12} lg={10} xl={10}>
                 <ModalView />
               </Grid>
