@@ -1,27 +1,35 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-const userSchema = new mongoose.Schema({
-  email: {
+const bookSchema = new mongoose.Schema({
+  title: {
     type: String,
     unique: true,
   },
-  username: {
+  author: {
+    type: String,
+  },
+  published: {
+    type: String,
+  },
+  img: {
     type: String,
     unique: true,
   },
-  passwordHash: String,
-  books: [
+  status: {
+    type: String,
+  },
+  users: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Book',
+      ref: 'User',
     },
   ],
 });
 
-userSchema.plugin(uniqueValidator);
+bookSchema.plugin(uniqueValidator);
 
-userSchema.set('toJSON', {
+bookSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -29,6 +37,6 @@ userSchema.set('toJSON', {
   },
 });
 
-const User = mongoose.model('User', userSchema);
+const Book = mongoose.model('Book', bookSchema);
 
-module.exports = User;
+module.exports = Book;

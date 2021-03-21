@@ -4,14 +4,17 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
+import Button from '@material-ui/core/Button';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+import { logoutUserAction } from '../login-box/loggedInUserReducer';
 
 import SearchBarResults from './components/SearchBarResults';
 import searchService from './searchService';
-import { searchAction } from './searchreducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,17 +67,31 @@ const SearchBar = ({ showModal }) => {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const user = useSelector((state) => state.user);
 
   const handleQuery = async ({ target }) => {
     const toArray = target.value.split(' ');
-    const toString = `${toArray.join('+')} `;
-    const receivedBooks = await searchService.getBooks(toString);
-    if (receivedBooks) {
-      const processedBooks = receivedBooks.map((book) => book);
-      setBooks(processedBooks);
-      dispatch(searchAction(books));
+    const toString = `${toArray.join('+')}`;
+    if (toString) {
+      searchService.getBooks(toString).then((receivedBooks) => {
+        if (receivedBooks && toString !== '') {
+          const processedBooks = receivedBooks.map((book) => book);
+          setBooks(processedBooks);
+        }
+      }).catch((error) => {
+        setBooks([]);
+      });
+    } else {
+      setBooks([]);
     }
+  };
+
+  const logout = () => {
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+    dispatch(logoutUserAction());
+    history.push('/');
   };
 
   return (
@@ -93,6 +110,11 @@ const SearchBar = ({ showModal }) => {
             Libtrack -
             {` ${user.username}`}
           </Typography>
+          <Button
+            onClick={logout}
+          >
+            Log out
+          </Button>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
@@ -107,7 +129,7 @@ const SearchBar = ({ showModal }) => {
               inputProps={{ 'aria-label': 'search' }}
               onChange={handleQuery}
             />
-            {books ? <SearchBarResults showModal={showModal} /> : null}
+            {books ? <SearchBarResults showModal={showModal} books={books} /> : null}
           </div>
         </Toolbar>
       </AppBar>

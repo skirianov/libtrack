@@ -10,10 +10,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useSelector } from 'react-redux';
 
+import booksAddServices from './booksAdditionService';
+
 const useStyles = makeStyles({
   root: {
     height: 700,
-    width: 400,
+    width: '100%',
   },
   button: {
     width: '100%',
@@ -31,38 +33,56 @@ const useStyles = makeStyles({
 const BookAddition = () => {
   const [img, setImg] = useState('');
   const book = useSelector((state) => state.book);
+  const noImage = 'https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg';
 
   const classes = useStyles();
+  const user = useSelector((state) => state.user);
+
+  const addToLibrary = () => {
+    booksAddServices.setToken(user.token);
+    const newBook = {
+      title: book.title,
+      author: book.authors,
+      published: book.publishedDate,
+      img: book.imageLinks ? book.imageLinks.thumbnail : noImage,
+    };
+
+    booksAddServices.addBook(newBook);
+  };
 
   return (
     <div>
-      <Card className={classes.root}>
-        <CardActionArea>
-          <CardMedia
-            component="img"
-            alt={book.title}
-            height="500px"
-            src={book.imageLinks.thumbnail}
-            title={book.title}
-          />
-          <CardContent className={classes.content}>
-            <Typography variant="body1" color="textPrimary" component="p">
-              {`Title: ${book.title}`}
-            </Typography>
-            <Typography variant="body1" color="textPrimary" component="p">
-              {`Author: ${book.authors}`}
-            </Typography>
-            <Typography variant="body1" color="textPrimary" component="p">
-              {`Published: ${book.publishedDate}`}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-        <CardActions className={classes.action}>
-          <Button size="large" color="primary" variant="contained" className={classes.button}>
-            Add to library
-          </Button>
-        </CardActions>
-      </Card>
+      {!book
+        ? null
+        : (
+          <Card className={classes.root}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                alt={book.title}
+                height="500px"
+                src={book.imageLinks ? book.imageLinks.thumbnail : noImage}
+                title={book.title}
+              />
+              <CardContent className={classes.content}>
+                <Typography variant="body1" color="textPrimary" component="p">
+                  {`Title: ${book.title}`}
+                </Typography>
+                <Typography variant="body1" color="textPrimary" component="p">
+                  {`Author: ${book.authors}`}
+                </Typography>
+                <Typography variant="body1" color="textPrimary" component="p">
+                  {`Published: ${book.publishedDate}`}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions className={classes.action}>
+              <Button size="large" color="primary" variant="contained" className={classes.button} onClick={addToLibrary}>
+                Add to library
+              </Button>
+            </CardActions>
+          </Card>
+        ) }
     </div>
   );
 };

@@ -22,10 +22,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBarResults = ({ showModal }) => {
+const SearchBarResults = ({ showModal, books }) => {
   const classes = useStyles();
-  const books = useSelector((state) => state.books);
-
   const dispatch = useDispatch();
 
   return (

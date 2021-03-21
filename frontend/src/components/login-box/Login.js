@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import Button from '../button/Button';
 import Progress from '../progress/Progress';
 import Notification from '../notification/Notification';
+import { modalAction } from '../modal/modalReducer';
 
 import { loggedInUserAction } from './loggedInUserReducer';
 import loginService from './loginService';
@@ -48,10 +49,8 @@ const Login = () => {
     const loggedInUser = await loginService.loginUser(user);
     if (loggedInUser === '401') {
       setMessage('Wrong email or password. Please try again');
-      setShow(false);
     } else {
       setMessage('Successfully logged in, redirecting...');
-      setShow(false);
       setEmail('');
       setPassword('');
       if (remember) {
@@ -60,6 +59,7 @@ const Login = () => {
         window.sessionStorage.setItem('sessionUser', JSON.stringify(loggedInUser));
       }
       dispatch(loggedInUserAction(loggedInUser));
+      dispatch(modalAction(false));
       history.push('/main');
     }
   };

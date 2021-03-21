@@ -21,7 +21,7 @@ const App = () => {
         <Home />
       </Route>
       <Route path="/">
-        {loggedIn ? <Redirect to="/main" /> : <MainPage />}
+        {loggedIn ? <Home /> : <MainPage />}
       </Route>
     </Switch>
   );
