@@ -8,9 +8,13 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { modalAction } from '../modal/modalReducer';
+import { booksAction } from '../books-list/booksReducer';
 
 import booksAddServices from './booksAdditionService';
+import { bookClear } from './bookReducer';
 
 const useStyles = makeStyles({
   root: {
@@ -32,22 +36,29 @@ const useStyles = makeStyles({
 
 const BookAddition = () => {
   const [img, setImg] = useState('');
+  const dispatch = useDispatch();
   const book = useSelector((state) => state.book);
+  let books = useSelector((state) => state.books);
   const noImage = 'https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg';
 
   const classes = useStyles();
   const user = useSelector((state) => state.user);
 
-  const addToLibrary = () => {
+  const addToLibrary = async () => {
     booksAddServices.setToken(user.token);
     const newBook = {
       title: book.title,
-      author: book.authors,
+      author: book.authors[0],
       published: book.publishedDate,
       img: book.imageLinks ? book.imageLinks.thumbnail : noImage,
     };
 
-    booksAddServices.addBook(newBook);
+    dispatch(modalAction(false));
+    setTimeout(() => dispatch(bookClear()), 500);
+    const savedBook = await booksAddServices.addBook(newBook);
+    books = books.concat(savedBook.data);
+    dispatch(booksAction(books));
+    console.log(savedBook);
   };
 
   return (
