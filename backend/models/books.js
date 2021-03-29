@@ -19,12 +19,10 @@ const bookSchema = new mongoose.Schema({
   status: {
     type: String,
   },
-  users: [
-    {
+  user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
-  ],
 });
 
 bookSchema.plugin(uniqueValidator);

@@ -13,19 +13,23 @@ const Home = () => {
   const [status, setStatus] = useState('');
   const dispatch = useDispatch();
   const modalStatus = useSelector((state) => state.modal);
+  const user = useSelector((state) => state.user);
 
   const showModal = (event) => {
     dispatch(modalAction(!modalStatus));
   };
-  const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    booksService.getAll().then((receivedBooks) => setBooks(receivedBooks));
+    booksService
+      .getUserBooks(user)
+      .then(
+        (receivedBooks) => {
+          dispatch(booksAction(receivedBooks));
+        },
+      );
   }, []);
 
-  const user = useSelector((state) => state.user);
-  const userBooks = books.filter((book) => book.user === user.id);
-  dispatch(booksAction(userBooks));
+  const books = useSelector((state) => state.books);
 
   return (
     <div>

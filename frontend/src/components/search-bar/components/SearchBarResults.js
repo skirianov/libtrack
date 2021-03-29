@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.primary}`,
     display: 'block',
+    zIndex: 2,
   },
   hidden: {
     display: 'none',

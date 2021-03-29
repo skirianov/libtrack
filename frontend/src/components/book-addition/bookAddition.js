@@ -38,7 +38,7 @@ const BookAddition = () => {
   const [img, setImg] = useState('');
   const dispatch = useDispatch();
   const book = useSelector((state) => state.book);
-  let books = useSelector((state) => state.books);
+  const books = useSelector((state) => state.books);
   const noImage = 'https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg';
 
   const classes = useStyles();
@@ -56,9 +56,8 @@ const BookAddition = () => {
     dispatch(modalAction(false));
     setTimeout(() => dispatch(bookClear()), 500);
     const savedBook = await booksAddServices.addBook(newBook);
-    books = books.concat(savedBook.data);
-    dispatch(booksAction(books));
-    console.log(savedBook);
+    dispatch(booksAction(books.concat(savedBook.data)));
+    dispatch(bookClear());
   };
 
   return (

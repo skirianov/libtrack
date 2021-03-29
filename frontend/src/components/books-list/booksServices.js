@@ -2,13 +2,13 @@ import axios from 'axios';
 
 const baseUrl = 'http://localhost:3001/api/books';
 
-const getAll = async () => {
-  const response = await axios.get(baseUrl);
+const getUserBooks = async (user) => {
+  const response = await axios.get(baseUrl, { params: { user: user.id } });
   return response.data;
 };
 
 const booksService = {
-  getAll,
+  getUserBooks,
 };
 
 export default booksService;

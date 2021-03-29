@@ -12,12 +12,6 @@ const getTokenFrom = request => {
   return null;
 };
 
-// get all books
-booksRouter.get('/', async (request, response) => {
-  const books = await Book.find({});
-  response.json(books);
-})
-
 // get specified book
 booksRouter.get('/:id', async (request, response) => {
   const book = await Book.findById(request.params.id);
@@ -29,10 +23,17 @@ booksRouter.get('/:id', async (request, response) => {
   }
 });
 
+// get books for specific user
+booksRouter.get('/', async (request, response) => {
+  const books = await Book.find({ user: request.query.user });
+  response.json(books);
+})
+
 // add new book to collection
 booksRouter.post('/', async (request, response) => {
   const { body } = request;
   const token = getTokenFrom(request);
+  console.log(token);
   const decodeToken = jwt.verify(token, process.env.TOKEN);
 
   if (!token || !decodeToken.id) {
@@ -46,10 +47,11 @@ booksRouter.post('/', async (request, response) => {
       published: body.published,
       img: body.img,
       status: 'not read',
-      user: user.id,
+      user: user._id,
   });
 
   const savedBook = await newBook.save();
+  console.log(savedBook);
   user.books = user.books.concat(savedBook);
   await user.save();
 
