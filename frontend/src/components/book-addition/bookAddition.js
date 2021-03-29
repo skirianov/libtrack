@@ -8,6 +8,10 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { modalAction } from '../modal/modalReducer';
@@ -16,26 +20,8 @@ import { booksAction } from '../books-list/booksReducer';
 import booksAddServices from './booksAdditionService';
 import { bookClear } from './bookReducer';
 
-const useStyles = makeStyles({
-  root: {
-    height: 700,
-    width: '100%',
-  },
-  button: {
-    width: '100%',
-    padding: 30,
-    borderRadius: 0,
-  },
-  content: {
-    marginTop: 10,
-  },
-  action: {
-    padding: 0,
-  },
-});
-
 const BookAddition = () => {
-  const [img, setImg] = useState('');
+  const [status, setStatus] = useState('');
   const dispatch = useDispatch();
   const book = useSelector((state) => state.book);
   const books = useSelector((state) => state.books);
@@ -51,6 +37,7 @@ const BookAddition = () => {
       author: book.authors[0],
       published: book.publishedDate,
       img: book.imageLinks ? book.imageLinks.thumbnail : noImage,
+      status,
     };
 
     dispatch(modalAction(false));
@@ -61,31 +48,51 @@ const BookAddition = () => {
   };
 
   return (
-    <div>
+    <div className={classes.root}>
       {!book
         ? null
         : (
-          <Card className={classes.root}>
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                alt={book.title}
-                height="500px"
-                src={book.imageLinks ? book.imageLinks.thumbnail : noImage}
-                title={book.title}
-              />
-              <CardContent className={classes.content}>
-                <Typography variant="body1" color="textPrimary" component="p">
-                  {`Title: ${book.title}`}
-                </Typography>
-                <Typography variant="body1" color="textPrimary" component="p">
-                  {`Author: ${book.authors}`}
-                </Typography>
-                <Typography variant="body1" color="textPrimary" component="p">
-                  {`Published: ${book.publishedDate}`}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
+          <Card className={classes.card}>
+            <CardMedia
+              component="img"
+              alt={book.title}
+              className={classes.img}
+              src={book.imageLinks ? book.imageLinks.thumbnail : noImage}
+            />
+            <CardContent className={classes.info}>
+              <Typography variant="body1" color="textPrimary" component="p">
+                <strong>Title: </strong>
+                {book.title.length > 50 ? `${book.title.substring(0, 40)}...` : book.title}
+              </Typography>
+              <Typography variant="body1" color="textPrimary" component="p">
+                <strong>Author: </strong>
+                {book.authors}
+              </Typography>
+              <Typography variant="body1" color="textPrimary" component="p">
+                <strong>Published: </strong>
+                {book.publishedDate}
+              </Typography>
+              <FormControl variant="outlined" className={classes.selection}>
+                <InputLabel id="status">Status</InputLabel>
+                <Select
+                  labelId="status"
+                  id="status-selector"
+                  value={status}
+                  onChange={(event) => setStatus(event.target.value)}
+                  label="Status"
+                >
+                  <MenuItem value="Not read">
+                    Not read
+                  </MenuItem>
+                  <MenuItem value="Read">
+                    Read
+                  </MenuItem>
+                  <MenuItem value="Reading">
+                    Reading
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </CardContent>
             <CardActions className={classes.action}>
               <Button size="large" color="primary" variant="contained" className={classes.button} onClick={addToLibrary}>
                 Add to library
@@ -98,3 +105,33 @@ const BookAddition = () => {
 };
 
 export default BookAddition;
+
+const useStyles = makeStyles({
+  root: {
+    height: '70vh',
+  },
+  card: {
+    height: '100%',
+    margin: 'auto',
+  },
+  button: {
+    width: '100%',
+    padding: 30,
+    borderRadius: 0,
+  },
+  info: {
+    marginTop: 10,
+  },
+  action: {
+    padding: 0,
+  },
+  img: {
+    width: '100%',
+    height: '60%',
+    verticalAlign: 'middle',
+  },
+  selection: {
+    width: '50%',
+    marginTop: 10,
+  },
+});

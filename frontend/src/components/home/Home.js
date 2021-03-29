@@ -11,6 +11,7 @@ import { booksAction } from '../books-list/booksReducer';
 
 const Home = () => {
   const [status, setStatus] = useState('');
+  const [books, setBooks] = useState([]);
   const dispatch = useDispatch();
   const modalStatus = useSelector((state) => state.modal);
   const user = useSelector((state) => state.user);
@@ -25,11 +26,10 @@ const Home = () => {
       .then(
         (receivedBooks) => {
           dispatch(booksAction(receivedBooks));
+          setBooks(receivedBooks);
         },
       );
   }, []);
-
-  const books = useSelector((state) => state.books);
 
   return (
     <div>

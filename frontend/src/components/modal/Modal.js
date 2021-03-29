@@ -9,6 +9,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import image from '/home/sergii/projects/dev/libtrack/frontend/src/images/login-img.png';
 
+import { Dialog, DialogContent } from '@material-ui/core';
+
 import Login from '../login-box/Login';
 import Register from '../register-box/Register';
 import Registered from '../register-box/Registered';
@@ -18,7 +20,6 @@ const useStyles = makeStyles({
   modal: {
     margin: 'auto',
     width: '30%',
-    height: '70%',
     border: 'none',
     outline: 'none',
   },
@@ -48,37 +49,17 @@ const ModalComponent = ({
   };
 
   return (
-    <Modal
+    <Dialog
       open={modalStatus}
       onClose={showModal}
-      className={classes.modal}
-      aria-labelledby="transition-modal-title"
-      aria-describedby="transition-modal-description"
-      closeAfterTransition
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
+      fullWidth
     >
-      <Fade in={modalStatus}>
+      <DialogContent>
         <Paper elevation={3}>
-          <Container maxWidth="sm">
-            <Grid
-              container
-              spacing={0}
-              direction="column"
-              alignItems="center"
-              justify="center"
-              style={{ minHeight: '70vh' }}
-            >
-              <Grid item xs={12} md={12} lg={10} xl={10}>
-                <ModalView />
-              </Grid>
-            </Grid>
-          </Container>
+          <ModalView />
         </Paper>
-      </Fade>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 };
 

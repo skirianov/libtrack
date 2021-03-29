@@ -41,13 +41,13 @@ booksRouter.post('/', async (request, response) => {
   }
 
   const user = await User.findById(decodeToken.id);
-    const newBook = new Book({
-      title: body.title,
-      author: body.author,
-      published: body.published,
-      img: body.img,
-      status: 'not read',
-      user: user._id,
+  const newBook = new Book({
+    title: body.title,
+    author: body.author,
+    published: body.published,
+    img: body.img,
+    status: body.status,
+    user: user._id,
   });
 
   const savedBook = await newBook.save();
@@ -56,6 +56,26 @@ booksRouter.post('/', async (request, response) => {
   await user.save();
 
   response.json(savedBook);
+})
+
+// update specific book
+booksRouter.put('/', async (request,response) => {
+  const { body } = request;
+  const token = getTokenFrom(request);
+
+  const decodeToken = jwt.verify(token, process.env.TOKEN);
+  if (!token || !decodeToken.id) {
+    response.status(401).json({ error: 'unauthorized access '});
+  }
+  const bookUpdated = await Book.findByIdAndUpdate( { _id: body.id}, { status: body.status }, { new: true });
+  response.json(bookUpdated);
+})
+
+booksRouter.delete('/:id', async (request, response) => {
+  const { body } = request;
+
+  await Book.findByIdAndDelete({ _id: request.params.id });
+  response.status(202);
 })
 
 module.exports = booksRouter;

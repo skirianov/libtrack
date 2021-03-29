@@ -16,17 +16,20 @@ const useStyles = makeStyles({
   },
 });
 
-const ButtonComponent = ({ text, action, value }) => {
+const ButtonComponent = ({
+  text, action, value, color, className,
+}) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <MyButon
         variant="contained"
-        color="primary"
+        color={color}
         onClick={action}
         type="submit"
         value={value}
+        className={className}
       >
         {text}
       </MyButon>
