@@ -16,22 +16,12 @@ import Register from '../register-box/Register';
 import Registered from '../register-box/Registered';
 import BookAddition from '../book-addition/bookAddition';
 
-const useStyles = makeStyles({
-  modal: {
-    margin: 'auto',
-    width: '30%',
-    border: 'none',
-    outline: 'none',
-  },
-});
-
 const ModalComponent = ({
   modalStatus,
   showModal,
   component,
   setStatus,
 }) => {
-  const classes = useStyles();
   const ModalView = () => {
     if (component === 'login') {
       return <Login />;
@@ -53,9 +43,10 @@ const ModalComponent = ({
       open={modalStatus}
       onClose={showModal}
       fullWidth
+      fullScreen
     >
-      <DialogContent>
-        <Paper elevation={3}>
+      <DialogContent style={{ padding: 0 }}>
+        <Paper elevation={5}>
           <ModalView />
         </Paper>
       </DialogContent>

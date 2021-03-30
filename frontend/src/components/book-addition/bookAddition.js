@@ -1,19 +1,19 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import { useSelector, useDispatch } from 'react-redux';
+import { useMediaQuery } from 'react-responsive';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { timesCircle } from '@fortawesome/free-solid-svg-icons';
 
+import Selector from '../selector/Selector';
 import { modalAction } from '../modal/modalReducer';
 import { booksAction } from '../books-list/booksReducer';
 
@@ -21,13 +21,27 @@ import booksAddServices from './booksAdditionService';
 import { bookClear } from './bookReducer';
 
 const BookAddition = () => {
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState('Not read');
   const dispatch = useDispatch();
   const book = useSelector((state) => state.book);
   const books = useSelector((state) => state.books);
   const noImage = 'https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg';
 
-  const classes = useStyles();
+  const isDesktop = useMediaQuery({
+    minDeviceWidth: 1024,
+  });
+  const isTablet = useMediaQuery({
+    minWidth: 600,
+    maxWidth: 1024,
+  });
+  const isMobile = useMediaQuery({
+    minWidth: 600,
+  });
+  const classesMobile = mobile();
+  const classesTablet = tablet();
+  const classesDesktop = desktop();
+  const classes = isDesktop ? classesDesktop : (isMobile ? classesTablet : classesMobile);
+
   const user = useSelector((state) => state.user);
 
   const addToLibrary = async () => {
@@ -47,12 +61,19 @@ const BookAddition = () => {
     dispatch(bookClear());
   };
 
+  const closeBook = () => {
+    dispatch(modalAction(false));
+  };
+
   return (
     <div className={classes.root}>
       {!book
         ? null
         : (
           <Card className={classes.card}>
+            <Button size="small" variant="contained" onClick={closeBook} className={classes.close}>
+              X
+            </Button>
             <CardMedia
               component="img"
               alt={book.title}
@@ -66,32 +87,13 @@ const BookAddition = () => {
               </Typography>
               <Typography variant="body1" color="textPrimary" component="p">
                 <strong>Author: </strong>
-                {book.authors}
+                {book.authors ? book.authors[0].substring(0, 30) : 'No Author'}
               </Typography>
               <Typography variant="body1" color="textPrimary" component="p">
                 <strong>Published: </strong>
-                {book.publishedDate}
+                {book.publishedDate ? book.publishedDate : 'No published date'}
               </Typography>
-              <FormControl variant="outlined" className={classes.selection}>
-                <InputLabel id="status">Status</InputLabel>
-                <Select
-                  labelId="status"
-                  id="status-selector"
-                  value={status}
-                  onChange={(event) => setStatus(event.target.value)}
-                  label="Status"
-                >
-                  <MenuItem value="Not read">
-                    Not read
-                  </MenuItem>
-                  <MenuItem value="Read">
-                    Read
-                  </MenuItem>
-                  <MenuItem value="Reading">
-                    Reading
-                  </MenuItem>
-                </Select>
-              </FormControl>
+              <Selector className={classes.selection} setStatus={setStatus} status={status} />
             </CardContent>
             <CardActions className={classes.action}>
               <Button size="large" color="primary" variant="contained" className={classes.button} onClick={addToLibrary}>
@@ -106,7 +108,7 @@ const BookAddition = () => {
 
 export default BookAddition;
 
-const useStyles = makeStyles({
+const desktop = makeStyles({
   root: {
     height: '70vh',
   },
@@ -134,4 +136,46 @@ const useStyles = makeStyles({
     width: '50%',
     marginTop: 10,
   },
+});
+
+const mobile = makeStyles({
+  card: {
+    height: '92vh',
+  },
+  button: {
+    width: '100%',
+    padding: 20,
+    borderRadius: 0,
+    position: 'absolute',
+    bottom: 0,
+  },
+  info: {
+    marginTop: 10,
+  },
+  action: {
+    padding: 0,
+  },
+  img: {
+    width: '90%',
+    height: '56%',
+    margin: 'auto',
+  },
+  selection: {
+    width: '100%',
+    marginTop: 20,
+  },
+  close: {
+    position: 'absolute',
+    backgroundColor: 'rgba(10,10,10,0.7)',
+    border: 'solid lightgrey 1px',
+    top: 10,
+    right: 10,
+    width: 20,
+    height: 60,
+    fontSize: 35,
+    color: 'white',
+  },
+});
+
+const tablet = makeStyles({
 });

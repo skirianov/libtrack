@@ -25,8 +25,14 @@ booksRouter.get('/:id', async (request, response) => {
 
 // get books for specific user
 booksRouter.get('/', async (request, response) => {
-  const books = await Book.find({ user: request.query.user });
-  response.json(books);
+  if (request.query.user) {
+    const books = await Book.find({ user: request.query.user });
+    response.json(books);
+  } else {
+    const books = await Book.find({});
+    response.json(books);
+  }
+  
 })
 
 // add new book to collection
@@ -41,17 +47,21 @@ booksRouter.post('/', async (request, response) => {
   }
 
   const user = await User.findById(decodeToken.id);
-  const newBook = new Book({
+  const existingBook = await Book.findOne({ title: body.title });
+
+  const newBook = ({
     title: body.title,
     author: body.author,
     published: body.published,
     img: body.img,
     status: body.status,
-    user: user._id,
+    user: existingBook ? existingBook.user.concat(user._id): user._id,
   });
 
-  const savedBook = await newBook.save();
-  console.log(savedBook);
+  const savedBook = await Book.findOneAndUpdate({ title: body.title }, newBook, {
+    new:true,
+    upsert: true,
+  });
   user.books = user.books.concat(savedBook);
   await user.save();
 
