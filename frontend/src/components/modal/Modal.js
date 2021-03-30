@@ -1,15 +1,7 @@
 import React from 'react';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import { makeStyles } from '@material-ui/core/styles';
-
-import image from '/home/sergii/projects/dev/libtrack/frontend/src/images/login-img.png';
-
 import { Dialog, DialogContent } from '@material-ui/core';
+import { useMediaQuery } from 'react-responsive';
 
 import Login from '../login-box/Login';
 import Register from '../register-box/Register';
@@ -38,12 +30,23 @@ const ModalComponent = ({
     return null;
   };
 
+  const isDesktop = useMediaQuery({
+    minDeviceWidth: 1024,
+  });
+  const isTablet = useMediaQuery({
+    minWidth: 600,
+    maxWidth: 1024,
+  });
+  const isMobile = useMediaQuery({
+    maxWidth: 600,
+  });
+
   return (
     <Dialog
       open={modalStatus}
       onClose={showModal}
-      fullWidth
-      fullScreen
+      fullWidth={!!isMobile}
+      fullScreen={!!isMobile}
     >
       <DialogContent style={{ padding: 0 }}>
         <Paper elevation={5}>

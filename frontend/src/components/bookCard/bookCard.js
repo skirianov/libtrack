@@ -28,12 +28,12 @@ const BookCard = ({ book }) => {
     maxWidth: 1024,
   });
   const isMobile = useMediaQuery({
-    minWidth: 600,
+    maxWidth: 600,
   });
   const classesMobile = mobile();
   const classesTablet = tablet();
   const classesDesktop = desktop();
-  const classes = isDesktop ? classesDesktop : (isMobile ? classesTablet : classesMobile);
+  const classes = isDesktop ? classesDesktop : (isMobile ? classesMobile : classesTablet);
   const user = useSelector((state) => state.user);
   const books = useSelector((state) => state.books);
   const dispatch = useDispatch();
@@ -138,7 +138,7 @@ const desktop = makeStyles({
     margin: 10,
   },
   media: {
-    height: 250,
+    height: 160,
   },
   button: {
     width: 160,

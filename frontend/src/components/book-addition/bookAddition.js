@@ -35,12 +35,12 @@ const BookAddition = () => {
     maxWidth: 1024,
   });
   const isMobile = useMediaQuery({
-    minWidth: 600,
+    maxWidth: 600,
   });
   const classesMobile = mobile();
   const classesTablet = tablet();
   const classesDesktop = desktop();
-  const classes = isDesktop ? classesDesktop : (isMobile ? classesTablet : classesMobile);
+  const classes = isDesktop ? classesDesktop : (isMobile ? classesMobile : classesTablet);
 
   const user = useSelector((state) => state.user);
 
@@ -71,9 +71,11 @@ const BookAddition = () => {
         ? null
         : (
           <Card className={classes.card}>
-            <Button size="small" variant="contained" onClick={closeBook} className={classes.close}>
-              X
-            </Button>
+            {isMobile ? (
+              <Button size="small" variant="contained" onClick={closeBook} className={classes.close}>
+                X
+              </Button>
+            ) : null}
             <CardMedia
               component="img"
               alt={book.title}
@@ -140,7 +142,7 @@ const desktop = makeStyles({
 
 const mobile = makeStyles({
   card: {
-    height: '92vh',
+    height: '94vh',
   },
   button: {
     width: '100%',
