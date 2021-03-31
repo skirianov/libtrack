@@ -1,9 +1,10 @@
 require('dotenv').config();
 
-const { PORT } = process.env;
+let { PORT } = process.env;
 const MONGODB_URI = process.env.MONGODB_URI;
-console.log(PORT);
-console.log(MONGODB_URI);
+if (PORT == null || PORT == "") {
+  PORT = 3001;
+};
 
 module.exports = {
   PORT,
