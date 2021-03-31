@@ -13,13 +13,20 @@ const ModalComponent = ({
   showModal,
   component,
   setStatus,
+  className,
 }) => {
   const ModalView = () => {
     if (component === 'login') {
-      return <Login />;
+      return <Login className={className} device={mobileDevice} />;
     }
     if (component === 'register') {
-      return <Register setStatus={setStatus} />;
+      return (
+        <Register
+          setStatus={setStatus}
+          device={mobileDevice}
+          className={className}
+        />
+      );
     }
     if (component === 'registered') {
       return <Registered />;
@@ -41,12 +48,15 @@ const ModalComponent = ({
     maxWidth: 600,
   });
 
+  const mobileDevice = isMobile ? 'mobile' : null;
+
   return (
     <Dialog
       open={modalStatus}
       onClose={showModal}
       fullWidth={!!isMobile}
       fullScreen={!!isMobile}
+      style={{ backgroundColor: 'transparent' }}
     >
       <DialogContent style={{ padding: 0 }}>
         <Paper elevation={5}>

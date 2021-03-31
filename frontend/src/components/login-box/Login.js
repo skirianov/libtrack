@@ -5,6 +5,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import Button from '../button/Button';
 import Progress from '../progress/Progress';
@@ -18,9 +19,16 @@ const useStyles = makeStyles({
   form: {
     height: '100%',
   },
+  close: {
+    width: '100%',
+  },
+  button: {
+    width: '100%',
+    height: 56,
+  },
 });
 
-const Login = () => {
+const Login = ({ className, device }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
@@ -68,9 +76,20 @@ const Login = () => {
     setRemember(!remember);
   };
 
+  const closeModal = () => {
+    dispatch(modalAction(false));
+  };
+
   return (
-    <div className="col-lg-5">
-      <form className={classes.form} onSubmit={loginUser}>
+    <div>
+      {device ? (
+        <Button
+          action={closeModal}
+          text={<CancelIcon style={{ fontSize: 40 }} />}
+          className={classes.close}
+        />
+      ) : null}
+      <form className={className} onSubmit={loginUser}>
         <TextField
           variant="outlined"
           margin="normal"
@@ -82,6 +101,7 @@ const Login = () => {
           autoComplete="email"
           autoFocus
           onChange={handleEmailChange}
+          className={classes.text}
         />
         <TextField
           variant="outlined"
@@ -99,8 +119,9 @@ const Login = () => {
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
           onChange={rememberMe}
+          style={{ margin: 10 }}
         />
-        <Button text="sign in" />
+        <Button text="sign in" color="primary" className={classes.button} />
       </form>
       {show ? <Progress status={show} /> : null}
       <Notification message={message} />

@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import Button from '../button/Button';
 import Progress from '../progress/Progress';
 import loginService from '../login-box/loginService';
+import { modalAction } from '../modal/modalReducer';
 
 const useStyles = makeStyles({
-  form: {
-    height: '100%',
+  close: {
+    width: '100%',
   },
 });
 
-const Register = ({ setStatus }) => {
+const Register = ({ setStatus, device, className }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,6 +23,7 @@ const Register = ({ setStatus }) => {
   const [show, setShow] = useState(false);
 
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const handleUsernameChange = ({ target }) => {
     setUsername(target.value);
@@ -48,9 +52,20 @@ const Register = ({ setStatus }) => {
     setStatus('registered');
   };
 
+  const closeModal = () => {
+    dispatch(modalAction(false));
+  };
+
   return (
     <div>
-      <form className={classes.form} onSubmit={registerUser}>
+      {device ? (
+        <Button
+          action={closeModal}
+          text={<CancelIcon style={{ fontSize: 40 }} />}
+          className={classes.close}
+        />
+      ) : null}
+      <form className={className} onSubmit={registerUser}>
         <TextField
           variant="outlined"
           margin="normal"

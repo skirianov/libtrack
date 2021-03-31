@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
@@ -9,6 +10,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import { useHistory } from 'react-router-dom';
+
+import { logoutUserAction } from '../login-box/loggedInUserReducer';
+
+import { drawerAction } from './drawerReducer';
 
 const useStyles = makeStyles({
   list: {
@@ -19,19 +25,18 @@ const useStyles = makeStyles({
   },
 });
 
-export default function SwipeableTemporaryDrawer() {
+const Drawer = () => {
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   const classes = useStyles();
-  const [state, setState] = React.useState({
-    left: false,
-  });
+  const drawer = useSelector((state) => state.drawer);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  const toggleDrawer = (anchor, open) => (event) => {
-    if (event && event.type === 'keydown'
-      && (event.key === 'Tab' || event.key === 'Shift')) {
-      return;
-    }
-
-    setState({ ...state, [anchor]: open });
+  const logout = () => {
+    window.localStorage.clear();
+    window.sessionStorage.clear();
+    dispatch(logoutUserAction());
+    history.push('/');
   };
 
   const list = (anchor) => (
@@ -40,16 +45,18 @@ export default function SwipeableTemporaryDrawer() {
         [classes.fullList]: anchor === 'top' || anchor === 'bottom',
       })}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      onClick={() => dispatch(drawerAction(false))}
+      onKeyDown={() => dispatch(drawerAction(false))}
     >
       <List>
-        {['User settings', 'Log out'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem button onClick={() => console.log('pressed first')}>
+          <ListItemIcon><InboxIcon /></ListItemIcon>
+          <ListItemText primary="User settings" />
+        </ListItem>
+        <ListItem button onClick={logout}>
+          <ListItemIcon><MailIcon /></ListItemIcon>
+          <ListItemText primary="Log out" />
+        </ListItem>
       </List>
     </div>
   );
@@ -57,13 +64,16 @@ export default function SwipeableTemporaryDrawer() {
   return (
     <div>
       <SwipeableDrawer
-        anchor="left"
-        open={state.left}
-        onClose={toggleDrawer('left', false)}
-        onOpen={toggleDrawer('left', true)}
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={drawer}
+        onClose={() => dispatch(drawerAction(false))}
+        onOpen={() => dispatch(drawerAction(true))}
       >
         {list('left')}
       </SwipeableDrawer>
     </div>
   );
-}
+};
+
+export default Drawer;

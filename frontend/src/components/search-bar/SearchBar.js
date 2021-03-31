@@ -10,36 +10,25 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useMediaQuery } from 'react-responsive';
 
-import { logoutUserAction } from '../login-box/loggedInUserReducer';
-import SwipeableTemporaryDrawer from '../drawer/Drawer';
+import Drawer from '../drawer/Drawer';
+import { drawerAction } from '../drawer/drawerReducer';
 
 import SearchBarResults from './components/SearchBarResults';
 import searchService from './searchService';
 
-const SearchBar = ({ showModal }) => {
+const SearchBar = ({ showModal, device }) => {
   const [books, setBooks] = useState([]);
-
-  const isDesktop = useMediaQuery({
-    minDeviceWidth: 1024,
-  });
-  const isTablet = useMediaQuery({
-    minWidth: 600,
-    maxWidth: 1024,
-  });
-  const isMobile = useMediaQuery({
-    maxWidth: 600,
-  });
+  const [drawer, setDrawer] = useState(false);
   const classesMobile = mobile();
   const classesTablet = tablet();
   const classesDesktop = desktop();
-  const classes = isDesktop ? classesDesktop : (isMobile ? classesMobile : classesTablet);
+  const classes = device === 'desktop'
+    ? classesDesktop : (device === 'tablet' ? classesTablet : classesMobile);
 
   const dispatch = useDispatch();
-  const history = useHistory();
   const user = useSelector((state) => state.user);
+  const drawerStatus = useSelector((state) => state.drawer);
 
   const handleQuery = async ({ target }) => {
     const toArray = target.value.split(' ');
@@ -58,14 +47,7 @@ const SearchBar = ({ showModal }) => {
     }
   };
 
-  const logout = () => {
-    window.localStorage.clear();
-    window.sessionStorage.clear();
-    dispatch(logoutUserAction());
-    history.push('/');
-  };
-
-  if (isDesktop) {
+  if (device === 'desktop') {
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -82,11 +64,6 @@ const SearchBar = ({ showModal }) => {
               Libtrack -
               {` ${user.username}`}
             </Typography>
-            <Button
-              onClick={logout}
-            >
-              Log out
-            </Button>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -117,6 +94,7 @@ const SearchBar = ({ showModal }) => {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={() => dispatch(drawerAction(!drawerStatus))}
           >
             <MenuIcon />
           </IconButton>
@@ -125,7 +103,7 @@ const SearchBar = ({ showModal }) => {
             {` ${user.username}`}
           </Typography>
         </Toolbar>
-        <SwipeableTemporaryDrawer />
+        <Drawer />
       </AppBar>
     </div>
   );

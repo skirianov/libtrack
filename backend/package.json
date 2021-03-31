@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index.js",
     "build": "rm -rf build && cd ../frontend && npm run build && cp -r ./build ../backend/",
-    "prod": "npm run build && cd ../ && cp -r ./backend ../../prod/"
+    "prod": "cd ../frontend && npm run build && cd ../ && cp -r ./backend ../../prod/"
   },
   "author": "Sergii Kirianov",
   "license": "ISC",

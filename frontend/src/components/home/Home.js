@@ -5,11 +5,10 @@ import BookList from '../books-list/booksList';
 import ModalComponent from '../modal/Modal';
 import { modalAction } from '../modal/modalReducer';
 import SearchBar from '../search-bar/SearchBar';
-
 import booksService from '../books-list/booksServices';
 import { booksAction } from '../books-list/booksReducer';
 
-const Home = () => {
+const Home = ({ device }) => {
   const [status, setStatus] = useState('');
   const [books, setBooks] = useState([]);
   const dispatch = useDispatch();
@@ -33,7 +32,7 @@ const Home = () => {
 
   return (
     <div>
-      <SearchBar showModal={showModal} />
+      <SearchBar showModal={showModal} device={device} />
       <ModalComponent
         component="book-adding"
         modalStatus={modalStatus}
