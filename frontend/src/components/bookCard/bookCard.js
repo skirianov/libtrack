@@ -21,19 +21,14 @@ import bookService from './bookService';
 const BookCard = ({ book }) => {
   const [status, setStatus] = useState('');
   const isDesktop = useMediaQuery({
-    minDeviceWidth: 1024,
-  });
-  const isTablet = useMediaQuery({
-    minWidth: 600,
-    maxWidth: 1024,
+    minDeviceWidth: 720,
   });
   const isMobile = useMediaQuery({
     maxWidth: 600,
   });
   const classesMobile = mobile();
-  const classesTablet = tablet();
   const classesDesktop = desktop();
-  const classes = isDesktop ? classesDesktop : (isMobile ? classesMobile : classesTablet);
+  const classes = isDesktop ? classesDesktop : classesMobile;
   const user = useSelector((state) => state.user);
   const books = useSelector((state) => state.books);
   const dispatch = useDispatch();
@@ -157,15 +152,14 @@ const mobile = makeStyles({
     margin: 10,
     display: 'flex',
     flexDirection: 'row',
-    height: 160,
   },
   media: {
     height: '100%',
-    width: 100,
+    width: '30vw',
   },
   imgContainer: {
     height: '100%',
-    width: 100,
+    width: '30vw',
     backgroundColor: 'blue',
   },
   selection: {
@@ -180,8 +174,7 @@ const mobile = makeStyles({
     justifyContent: 'space-between',
   },
   info: {
-    width: 250,
-    height: 160,
+    width: '60vw',
     display: 'flex',
     flexDirection: 'column',
   },

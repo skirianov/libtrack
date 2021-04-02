@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -10,15 +10,12 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { timesCircle } from '@fortawesome/free-solid-svg-icons';
 
 import Selector from '../selector/Selector';
 import { modalAction } from '../modal/modalReducer';
 import { booksAction } from '../books-list/booksReducer';
 
 import booksAddServices from './booksAdditionService';
-import { bookClear } from './bookReducer';
 
 const BookAddition = () => {
   const [status, setStatus] = useState('Not read');
@@ -54,15 +51,13 @@ const BookAddition = () => {
       status,
     };
 
-    dispatch(modalAction(false));
-    setTimeout(() => dispatch(bookClear()), 500);
+    dispatch(modalAction('CLOSE_MODAL', ''));
     const savedBook = await booksAddServices.addBook(newBook);
     dispatch(booksAction(books.concat(savedBook.data)));
-    dispatch(bookClear());
   };
 
   const closeBook = () => {
-    dispatch(modalAction(false));
+    dispatch(modalAction('CLOSE_MODAL', ''));
   };
 
   return (
@@ -112,10 +107,11 @@ export default BookAddition;
 
 const desktop = makeStyles({
   root: {
-    height: '70vh',
+    height: '60vh',
   },
   card: {
-    height: '100%',
+    height: '60vh',
+    width: 400,
     margin: 'auto',
   },
   button: {
@@ -124,14 +120,14 @@ const desktop = makeStyles({
     borderRadius: 0,
   },
   info: {
-    marginTop: 10,
+    marginTop: '4vh',
   },
   action: {
     padding: 0,
   },
   img: {
     width: '100%',
-    height: '60%',
+    height: '50%',
     verticalAlign: 'middle',
   },
   selection: {

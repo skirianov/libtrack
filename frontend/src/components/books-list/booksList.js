@@ -9,7 +9,6 @@ const useStyles = makeStyles({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    flexGrow: 3,
     marginTop: 10,
   },
 });

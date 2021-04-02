@@ -6,6 +6,7 @@ import loggedInUserReducer from './components/login-box/loggedInUserReducer';
 import bookReducer from './components/book-addition/bookReducer';
 import booksReducer from './components/books-list/booksReducer';
 import drawerReducer from './components/drawer/drawerReducer';
+import searchReducer from './components/navBar/searchReducer';
 
 const reducer = combineReducers({
   modal: modalReducer,
@@ -13,6 +14,7 @@ const reducer = combineReducers({
   book: bookReducer,
   books: booksReducer,
   drawer: drawerReducer,
+  search: searchReducer,
 });
 
 const store = createStore(reducer, composeWithDevTools());

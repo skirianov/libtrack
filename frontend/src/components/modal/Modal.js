@@ -1,48 +1,45 @@
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import { Dialog, DialogContent } from '@material-ui/core';
 import { useMediaQuery } from 'react-responsive';
+import { useSelector } from 'react-redux';
 
 import Login from '../login-box/Login';
 import Register from '../register-box/Register';
 import Registered from '../register-box/Registered';
 import BookAddition from '../book-addition/bookAddition';
+import SearchField from '../navBar/searchField/searchField';
 
 const ModalComponent = ({
   modalStatus,
   showModal,
-  component,
   setStatus,
   className,
 }) => {
   const ModalView = () => {
-    if (component === 'login') {
-      return <Login className={className} device={mobileDevice} />;
+    const modalState = useSelector((state) => state.modal);
+    switch (modalState) {
+      case 'login':
+        return <Login device={mobileDevice} />;
+      case 'register':
+        return (
+          <Register
+            setStatus={setStatus}
+            device={mobileDevice}
+          />
+        );
+      case 'registered':
+        return <Registered />;
+      case 'book-adding':
+        return <BookAddition />;
+      case 'mobile-search':
+        return <SearchField showModal={showModal} device={isMobile} />;
+      default:
+        return null;
     }
-    if (component === 'register') {
-      return (
-        <Register
-          setStatus={setStatus}
-          device={mobileDevice}
-          className={className}
-        />
-      );
-    }
-    if (component === 'registered') {
-      return <Registered />;
-    }
-    if (component === 'book-adding') {
-      return <BookAddition />;
-    }
-    return null;
   };
 
   const isDesktop = useMediaQuery({
     minDeviceWidth: 1024,
-  });
-  const isTablet = useMediaQuery({
-    minWidth: 600,
-    maxWidth: 1024,
   });
   const isMobile = useMediaQuery({
     maxWidth: 600,
@@ -53,15 +50,13 @@ const ModalComponent = ({
   return (
     <Dialog
       open={modalStatus}
-      onClose={showModal}
+      onClose={() => showModal('CLOSE_MODAL', '')}
       fullWidth={!!isMobile}
       fullScreen={!!isMobile}
       style={{ backgroundColor: 'transparent' }}
     >
-      <DialogContent style={{ padding: 0 }}>
-        <Paper elevation={5}>
-          <ModalView />
-        </Paper>
+      <DialogContent className={className}>
+        <ModalView />
       </DialogContent>
     </Dialog>
   );

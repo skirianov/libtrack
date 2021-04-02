@@ -4,19 +4,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import BookList from '../books-list/booksList';
 import ModalComponent from '../modal/Modal';
 import { modalAction } from '../modal/modalReducer';
-import SearchBar from '../search-bar/SearchBar';
+import NavBar from '../navBar/NavBar';
 import booksService from '../books-list/booksServices';
 import { booksAction } from '../books-list/booksReducer';
 
 const Home = ({ device }) => {
-  const [status, setStatus] = useState('');
   const [books, setBooks] = useState([]);
-  const dispatch = useDispatch();
+  const booksFromState = useSelector((state) => state.books);
+  const showSearch = useSelector((state) => state.search);
   const modalStatus = useSelector((state) => state.modal);
   const user = useSelector((state) => state.user);
 
-  const showModal = (event) => {
-    dispatch(modalAction(!modalStatus));
+  const dispatch = useDispatch();
+
+  const showModal = (type, text) => {
+    dispatch(modalAction(type, text));
   };
 
   useEffect(() => {
@@ -24,22 +26,26 @@ const Home = ({ device }) => {
       .getUserBooks(user)
       .then(
         (receivedBooks) => {
-          dispatch(booksAction(receivedBooks));
           setBooks(receivedBooks);
         },
       );
-  }, []);
+  }, [booksFromState]);
 
   return (
     <div>
-      <SearchBar showModal={showModal} device={device} />
-      <ModalComponent
-        component="book-adding"
-        modalStatus={modalStatus}
-        showModal={showModal}
-        setStatus={setStatus}
-      />
+      <NavBar showModal={showModal} device={device} />
       <BookList books={books} />
+      {showSearch === true ? (
+        <ModalComponent
+          modalStatus={modalStatus}
+          showModal={showModal}
+        />
+      ) : (
+        <ModalComponent
+          modalStatus={modalStatus}
+          showModal={showModal}
+        />
+      ) }
     </div>
   );
 };

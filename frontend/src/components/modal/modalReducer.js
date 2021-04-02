@@ -1,6 +1,16 @@
-const modalReducer = (state = false, action) => {
+const modalReducer = (state = '', action) => {
   switch (action.type) {
-    case 'SHOW':
+    case 'LOGIN':
+      return action.payload;
+    case 'REGISTER':
+      return action.payload;
+    case 'BOOK_ADD':
+      return action.payload;
+    case 'MOBILE_SEARCH':
+      return action.payload;
+    case 'REGISTERED':
+      return action.payload;
+    case 'CLOSE_MODAL':
       return action.payload;
     default:
       return state;
@@ -9,7 +19,12 @@ const modalReducer = (state = false, action) => {
 
 export default modalReducer;
 
-export const modalAction = (bool) => ({
-  type: 'SHOW',
-  payload: bool,
+export const modalAction = (type, text) => ({
+  type,
+  payload: text,
+});
+
+export const modalClose = () => ({
+  type: 'CLOSE_MODAL',
+  payload: '',
 });

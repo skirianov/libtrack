@@ -17,7 +17,8 @@ import loginService from './loginService';
 
 const useStyles = makeStyles({
   form: {
-    height: '100%',
+    width: '100%',
+    marginTop: '10%',
   },
   close: {
     width: '100%',
@@ -28,7 +29,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Login = ({ className, device }) => {
+const Login = ({ device }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [show, setShow] = useState(false);
@@ -89,7 +90,7 @@ const Login = ({ className, device }) => {
           className={classes.close}
         />
       ) : null}
-      <form className={className} onSubmit={loginUser}>
+      <form onSubmit={loginUser} className={classes.form}>
         <TextField
           variant="outlined"
           margin="normal"

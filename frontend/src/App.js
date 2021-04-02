@@ -18,15 +18,11 @@ const App = () => {
   const isDesktop = useMediaQuery({
     minDeviceWidth: 1024,
   });
-  const isTablet = useMediaQuery({
-    minWidth: 600,
-    maxWidth: 1024,
-  });
   const isMobile = useMediaQuery({
     maxWidth: 600,
   });
 
-  const device = isDesktop ? 'desktop' : (isTablet ? 'tablet' : 'mobile');
+  const device = isDesktop ? 'desktop' : 'mobile';
 
   dispatch(loggedInUserAction(user));
   return (

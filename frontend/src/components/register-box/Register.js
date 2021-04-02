@@ -13,6 +13,11 @@ const useStyles = makeStyles({
   close: {
     width: '100%',
   },
+  button: {
+    width: '100%',
+    height: 50,
+    marginTop: 20,
+  },
 });
 
 const Register = ({ setStatus, device, className }) => {
@@ -113,7 +118,7 @@ const Register = ({ setStatus, device, className }) => {
           autoComplete="off"
           onChange={handlePasswordChange}
         />
-        <Button text="sign up" />
+        <Button text="sign up" color="primary" className={classes.button} />
       </form>
       {show ? <Progress status={show} /> : null}
     </div>

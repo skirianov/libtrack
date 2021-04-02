@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 
 import { bookAction } from '../../book-addition/bookReducer';
+import { searchAction } from '../searchReducer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,9 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBarResults = ({ showModal, books }) => {
+const SearchBarResults = ({ showModal, books, device }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const bookClicked = () => {
+    showModal('BOOK_ADD', 'book-adding');
+  };
 
   return (
     <List
@@ -36,7 +41,10 @@ const SearchBarResults = ({ showModal, books }) => {
       {books
         ? books.map((book) => (
           <div key={book.id}>
-            <ListItem button onClick={() => { showModal(); dispatch(bookAction(book)); }}>
+            <ListItem
+              button
+              onClick={() => { dispatch(bookAction(book)); bookClicked(); }}
+            >
               <ListItemText primary={book.volumeInfo.title} />
             </ListItem>
             <Divider />

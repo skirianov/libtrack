@@ -58,7 +58,7 @@ const MainPage = ({ device }) => {
             modalStatus={modalStatus}
             component={status}
             setStatus={setStatus}
-            className={classes.modal}
+            className={device === 'desktop' ? classes.modal : null}
           />
         </div>
         <img src={home} alt="home page logo" className={classes.logo} />
@@ -90,6 +90,9 @@ const desktop = makeStyles({
     width: '50%',
     marginTop: 10,
   },
+  modal: {
+    height: '60vh',
+  },
 });
 
 const mobile = makeStyles({
@@ -119,6 +122,7 @@ const mobile = makeStyles({
   modal: {
     position: 'absolute',
     top: '26%',
+    height: '50vh',
   },
 });
 
