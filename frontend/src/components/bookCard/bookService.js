@@ -20,7 +20,7 @@ const deleteBook = async (book) => {
     headers: { Authorization: token },
   };
 
-  const response = await axios.delete(`${baseUrl}/${book.id}`);
+  await axios.delete(`${baseUrl}/${book.id}`);
 };
 
 const bookService = {

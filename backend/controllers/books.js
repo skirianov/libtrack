@@ -85,7 +85,7 @@ booksRouter.delete('/:id', async (request, response) => {
   const { body } = request;
 
   await Book.findByIdAndDelete({ _id: request.params.id });
-  response.status(202);
+  response.status(204);
 })
 
 module.exports = booksRouter;

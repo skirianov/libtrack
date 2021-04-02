@@ -27,17 +27,12 @@ const BookAddition = () => {
   const isDesktop = useMediaQuery({
     minDeviceWidth: 1024,
   });
-  const isTablet = useMediaQuery({
-    minWidth: 600,
-    maxWidth: 1024,
-  });
   const isMobile = useMediaQuery({
     maxWidth: 600,
   });
   const classesMobile = mobile();
-  const classesTablet = tablet();
   const classesDesktop = desktop();
-  const classes = isDesktop ? classesDesktop : (isMobile ? classesMobile : classesTablet);
+  const classes = isDesktop ? classesDesktop : classesMobile;
 
   const user = useSelector((state) => state.user);
 
@@ -45,7 +40,7 @@ const BookAddition = () => {
     booksAddServices.setToken(user.token);
     const newBook = {
       title: book.title,
-      author: book.authors[0],
+      author: book.authors ? book.authors[0] : 'No author',
       published: book.publishedDate,
       img: book.imageLinks ? book.imageLinks.thumbnail : noImage,
       status,

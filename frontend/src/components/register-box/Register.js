@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Register = ({ setStatus, device, className }) => {
+const Register = ({ device, className }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,11 +54,10 @@ const Register = ({ setStatus, device, className }) => {
     };
 
     const returned = await loginService.registerNewUser(newUser);
-    setStatus('registered');
   };
 
   const closeModal = () => {
-    dispatch(modalAction(false));
+    dispatch(modalAction('CLOSE_MODAL', ''));
   };
 
   return (

@@ -26,9 +26,13 @@ const Home = ({ device }) => {
       .getUserBooks(user)
       .then(
         (receivedBooks) => {
-          setBooks(receivedBooks);
+          dispatch(booksAction(receivedBooks));
         },
       );
+  }, []);
+
+  useEffect(() => {
+    setBooks(booksFromState);
   }, [booksFromState]);
 
   return (

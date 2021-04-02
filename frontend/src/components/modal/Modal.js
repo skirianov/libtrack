@@ -10,20 +10,17 @@ import BookAddition from '../book-addition/bookAddition';
 import SearchField from '../navBar/searchField/searchField';
 
 const ModalComponent = ({
-  modalStatus,
   showModal,
-  setStatus,
   className,
 }) => {
+  const modalState = useSelector((state) => state.modal);
   const ModalView = () => {
-    const modalState = useSelector((state) => state.modal);
     switch (modalState) {
       case 'login':
         return <Login device={mobileDevice} />;
       case 'register':
         return (
           <Register
-            setStatus={setStatus}
             device={mobileDevice}
           />
         );
@@ -49,7 +46,7 @@ const ModalComponent = ({
 
   return (
     <Dialog
-      open={modalStatus}
+      open={!!modalState}
       onClose={() => showModal('CLOSE_MODAL', '')}
       fullWidth={!!isMobile}
       fullScreen={!!isMobile}

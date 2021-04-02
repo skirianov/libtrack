@@ -24,12 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBarResults = ({ showModal, books, device }) => {
+const SearchBarResults = ({ showModal, books, setBooks }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const bookClicked = () => {
     showModal('BOOK_ADD', 'book-adding');
+    setBooks((prevState) => []);
   };
 
   return (

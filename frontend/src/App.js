@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import React, { Component } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Route, Switch, Redirect } from 'react-router';
+import { Route, Switch } from 'react-router';
 import { useMediaQuery } from 'react-responsive';
 import './App.sass';
 
@@ -30,9 +30,11 @@ const App = () => {
       <Route path="/main">
         <Home device={device} />
       </Route>
-      <Route path="/" exact>
-        {loggedIn ? <Home device={device} /> : <MainPage device={device} />}
-      </Route>
+      <Route
+        path="/"
+        exact
+        component={loggedIn ? Home : MainPage}
+      />
     </Switch>
   );
 };

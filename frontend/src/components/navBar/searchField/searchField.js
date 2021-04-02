@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
@@ -8,24 +9,19 @@ import searchService from '../searchService';
 import SearchBarResults from '../searchResults/SearchBarResults';
 
 const SearchField = ({ showModal, device }) => {
+  const modal = useSelector((state) => state.modal);
   const [books, setBooks] = useState([]);
+  const [query, setQeury] = useState('');
   const classes = useStyles();
 
-  const handleQuery = async ({ target }) => {
-    const toArray = target.value.split(' ');
-    const toString = `${toArray.join('+')}`;
-    if (toString) {
-      searchService.getBooks(toString).then((receivedBooks) => {
-        if (receivedBooks && toString !== '') {
-          const processedBooks = receivedBooks.map((book) => book);
-          setBooks(processedBooks);
-        }
-      }).catch((error) => {
-        setBooks([]);
-      });
-    } else {
-      setBooks([]);
-    }
+  useEffect(() => {
+    searchService.getBooks(query).then((received) => {
+      setBooks(received);
+    });
+  }, [query]);
+
+  const handleQuery = ({ target }) => {
+    setQeury((prevState) => target.value);
   };
 
   return (
@@ -43,7 +39,7 @@ const SearchField = ({ showModal, device }) => {
         inputProps={{ 'aria-label': 'search' }}
         onChange={handleQuery}
       />
-      {books ? <SearchBarResults showModal={showModal} books={books} device={device} /> : null}
+      {books ? <SearchBarResults showModal={showModal} books={books} device={device} setBooks={setBooks} /> : null}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-const modalReducer = (state = '', action) => {
+const modalReducer = (state = null, action) => {
   switch (action.type) {
     case 'LOGIN':
       return action.payload;

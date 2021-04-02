@@ -68,7 +68,7 @@ const Login = ({ device }) => {
         window.sessionStorage.setItem('sessionUser', JSON.stringify(loggedInUser));
       }
       dispatch(loggedInUserAction(loggedInUser));
-      dispatch(modalAction(false));
+      dispatch(modalAction('CLOSE_MODAL', ''));
       history.push('/main');
     }
   };
@@ -78,7 +78,7 @@ const Login = ({ device }) => {
   };
 
   const closeModal = () => {
-    dispatch(modalAction(false));
+    dispatch(modalAction('CLOSE_MODAL', ''));
   };
 
   return (

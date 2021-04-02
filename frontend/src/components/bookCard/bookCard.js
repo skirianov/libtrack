@@ -13,7 +13,6 @@ import { useMediaQuery } from 'react-responsive';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
 import ButtonComponent from '../button/Button';
-import Selector from '../selector/Selector';
 import { booksAction } from '../books-list/booksReducer';
 
 import bookService from './bookService';
@@ -22,9 +21,6 @@ const BookCard = ({ book }) => {
   const [status, setStatus] = useState('');
   const isDesktop = useMediaQuery({
     minDeviceWidth: 720,
-  });
-  const isMobile = useMediaQuery({
-    maxWidth: 600,
   });
   const classesMobile = mobile();
   const classesDesktop = desktop();
@@ -48,12 +44,12 @@ const BookCard = ({ book }) => {
   };
 
   const deleteBook = async () => {
-    await bookService.setToken(user.token);
-    await bookService.deleteBook(book);
     const array = [...books];
     const index = array.indexOf(book);
-    array.slice(index, 1);
+    array.splice(index, 1);
     dispatch(booksAction(array));
+    const token = await bookService.setToken(user.token);
+    const response = await bookService.deleteBook(book);
   };
 
   return (
@@ -74,7 +70,7 @@ const BookCard = ({ book }) => {
               component="h6"
               style={{ height: 70, overflow: 'anywhere' }}
             >
-              {book.title}
+              {book.title.length > 50 ? `${book.title.substring(0, 30)}...` : book.title}
             </Typography>
             <div>
               <Typography
@@ -129,19 +125,25 @@ export default BookCard;
 
 const desktop = makeStyles({
   root: {
-    width: 345,
+    width: '22vw',
     margin: 10,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   media: {
-    height: 160,
+    height: '18vh',
   },
   button: {
-    width: 160,
+    width: '10vw',
     height: 40,
   },
   selection: {
     width: 310,
     marginTop: 20,
+  },
+  actionArea: {
+    height: '60%',
   },
 });
 

@@ -13,18 +13,15 @@ import { modalAction } from '../modal/modalReducer';
 import home from '/home/sergii/projects/dev/libtrack/frontend/src/images/reading-homepage.svg';
 
 const MainPage = ({ device }) => {
-  const [status, setStatus] = useState('');
   const classesMobile = mobile();
   const classesTablet = tablet();
   const classesDesktop = desktop();
   const classes = device === 'desktop'
     ? classesDesktop : (device === 'tablet' ? classesTablet : classesMobile);
   const dispatch = useDispatch();
-  const modalStatus = useSelector((state) => state.modal);
 
-  const showModal = (event) => {
-    dispatch(modalAction(!modalStatus));
-    setStatus(event.currentTarget.value);
+  const showModal = (type, text) => {
+    dispatch(modalAction(type, text));
   };
 
   return (
@@ -40,14 +37,14 @@ const MainPage = ({ device }) => {
           <div className={classes.actions}>
             <Button
               text="Log in"
-              action={showModal}
+              action={() => showModal('LOGIN', 'login')}
               value="login"
               className={classes.button}
               color="primary"
             />
             <Button
               text="sign up"
-              action={showModal}
+              action={() => showModal('REGISTER', 'register')}
               value="register"
               className={classes.button}
               color="default"
@@ -55,9 +52,6 @@ const MainPage = ({ device }) => {
           </div>
           <ModalComponent
             showModal={showModal}
-            modalStatus={modalStatus}
-            component={status}
-            setStatus={setStatus}
             className={device === 'desktop' ? classes.modal : null}
           />
         </div>
