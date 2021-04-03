@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import CancelIcon from '@material-ui/icons/Cancel';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import Button from '../button/Button';
 import Progress from '../progress/Progress';
@@ -18,7 +19,8 @@ import loginService from './loginService';
 const useStyles = makeStyles({
   form: {
     width: '100%',
-    marginTop: '10%',
+    marginBottom: '3vh',
+    marginTop: 40,
   },
   close: {
     width: '100%',
@@ -26,6 +28,11 @@ const useStyles = makeStyles({
   button: {
     width: '100%',
     height: 56,
+  },
+  label: {
+    marginTop: 10,
+    marginLeft: 5,
+    color: '#4a4a4a',
   },
 });
 
@@ -91,6 +98,7 @@ const Login = ({ device }) => {
         />
       ) : null}
       <form onSubmit={loginUser} className={classes.form}>
+        <InputLabel className={classes.label}>Email</InputLabel>
         <TextField
           variant="outlined"
           margin="normal"
@@ -104,6 +112,7 @@ const Login = ({ device }) => {
           onChange={handleEmailChange}
           className={classes.text}
         />
+        <InputLabel className={classes.label}>Password</InputLabel>
         <TextField
           variant="outlined"
           margin="normal"

@@ -13,18 +13,17 @@ import { useMediaQuery } from 'react-responsive';
 import CardActionArea from '@material-ui/core/CardActionArea';
 
 import ButtonComponent from '../button/Button';
+import Selector from '../selector/Selector';
 import { booksAction } from '../books-list/booksReducer';
 
 import bookService from './bookService';
 
-const BookCard = ({ book }) => {
+const BookCard = ({ book, size }) => {
   const [status, setStatus] = useState('');
-  const isDesktop = useMediaQuery({
-    minDeviceWidth: 720,
-  });
   const classesMobile = mobile();
   const classesDesktop = desktop();
-  const classes = isDesktop ? classesDesktop : classesMobile;
+  const classes = size > 720 ? classesDesktop : classesMobile;
+  const isDesktop = size > 720;
   const user = useSelector((state) => state.user);
   const books = useSelector((state) => state.books);
   const dispatch = useDispatch();
@@ -95,7 +94,13 @@ const BookCard = ({ book }) => {
                 component="p"
               >
                 <strong>Status: </strong>
-                {book.status}
+                {size < 720 ? book.status : (
+                  <Selector
+                    className={classes.selection}
+                    setStatus={setStatus}
+                    status={status}
+                  />
+                )}
               </Typography>
             </div>
           </CardContent>

@@ -14,10 +14,10 @@ import SearchField from './searchField/searchField';
 import Menu from './menu/Menu';
 import { searchAction } from './searchReducer';
 
-const NavBar = ({ showModal, device }) => {
+const NavBar = ({ showModal, size }) => {
   const classesMobile = mobile();
   const classesDesktop = desktop();
-  const classes = device === 'desktop'
+  const classes = size > 720
     ? classesDesktop : classesMobile;
   const user = useSelector((state) => state.user);
 
@@ -28,7 +28,7 @@ const NavBar = ({ showModal, device }) => {
     showModal('MOBILE_SEARCH', 'mobile-search');
   };
 
-  if (device === 'desktop') {
+  if (size > 720) {
     return (
       <div className={classes.root}>
         <AppBar position="static">

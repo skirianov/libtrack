@@ -13,13 +13,13 @@ const useStyles = makeStyles({
   },
 });
 
-const BookList = ({ books }) => {
+const BookList = ({ books, size }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       {books ? (
-        books.map((book) => <BookCard key={book.id} book={book} />)
+        books.map((book) => <BookCard key={book.id} book={book} size={size} />)
       ) : null }
     </div>
   );

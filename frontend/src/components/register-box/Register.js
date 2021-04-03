@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/Cancel';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import Button from '../button/Button';
 import Progress from '../progress/Progress';
@@ -10,6 +11,9 @@ import loginService from '../login-box/loginService';
 import { modalAction } from '../modal/modalReducer';
 
 const useStyles = makeStyles({
+  form: {
+    marginTop: 40,
+  },
   close: {
     width: '100%',
   },
@@ -17,6 +21,11 @@ const useStyles = makeStyles({
     width: '100%',
     height: 50,
     marginTop: 20,
+  },
+  label: {
+    marginTop: 10,
+    marginLeft: 5,
+    color: '#4a4a4a',
   },
 });
 
@@ -69,7 +78,8 @@ const Register = ({ device, className }) => {
           className={classes.close}
         />
       ) : null}
-      <form className={className} onSubmit={registerUser}>
+      <form className={classes.form} onSubmit={registerUser}>
+        <InputLabel className={classes.label}>Username</InputLabel>
         <TextField
           variant="outlined"
           margin="normal"
@@ -82,6 +92,7 @@ const Register = ({ device, className }) => {
           autoFocus
           onChange={handleUsernameChange}
         />
+        <InputLabel className={classes.label}>Email</InputLabel>
         <TextField
           variant="outlined"
           margin="normal"
@@ -93,6 +104,7 @@ const Register = ({ device, className }) => {
           autoComplete="off"
           onChange={handleEmailChange}
         />
+        <InputLabel className={classes.label}>Password</InputLabel>
         <TextField
           variant="outlined"
           margin="normal"
@@ -105,6 +117,7 @@ const Register = ({ device, className }) => {
           autoComplete="off"
           onChange={handlePasswordChange}
         />
+        <InputLabel className={classes.label}>Confirm password</InputLabel>
         <TextField
           variant="outlined"
           margin="normal"

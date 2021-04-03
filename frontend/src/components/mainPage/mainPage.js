@@ -12,12 +12,12 @@ import { modalAction } from '../modal/modalReducer';
 
 import home from '/home/sergii/projects/dev/libtrack/frontend/src/images/reading-homepage.svg';
 
-const MainPage = ({ device }) => {
+const MainPage = ({ size }) => {
   const classesMobile = mobile();
   const classesTablet = tablet();
   const classesDesktop = desktop();
-  const classes = device === 'desktop'
-    ? classesDesktop : (device === 'tablet' ? classesTablet : classesMobile);
+  const classes = size > 720
+    ? classesDesktop : classesMobile;
   const dispatch = useDispatch();
 
   const showModal = (type, text) => {
@@ -52,7 +52,7 @@ const MainPage = ({ device }) => {
           </div>
           <ModalComponent
             showModal={showModal}
-            className={device === 'desktop' ? classes.modal : null}
+            size={size}
           />
         </div>
         <img src={home} alt="home page logo" className={classes.logo} />
@@ -85,7 +85,7 @@ const desktop = makeStyles({
     marginTop: 10,
   },
   modal: {
-    height: '60vh',
+    backgroundColor: 'red',
   },
 });
 

@@ -17,22 +17,16 @@ import { booksAction } from '../books-list/booksReducer';
 
 import booksAddServices from './booksAdditionService';
 
-const BookAddition = () => {
+const BookAddition = ({ isMobile }) => {
   const [status, setStatus] = useState('Not read');
   const dispatch = useDispatch();
   const book = useSelector((state) => state.book);
   const books = useSelector((state) => state.books);
   const noImage = 'https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg';
 
-  const isDesktop = useMediaQuery({
-    minDeviceWidth: 1024,
-  });
-  const isMobile = useMediaQuery({
-    maxWidth: 600,
-  });
   const classesMobile = mobile();
   const classesDesktop = desktop();
-  const classes = isDesktop ? classesDesktop : classesMobile;
+  const classes = isMobile ? classesMobile : classesDesktop;
 
   const user = useSelector((state) => state.user);
 
@@ -102,10 +96,10 @@ export default BookAddition;
 
 const desktop = makeStyles({
   root: {
-    height: '60vh',
+    height: 500,
   },
   card: {
-    height: '60vh',
+    height: 500,
     width: 400,
     margin: 'auto',
   },
@@ -115,7 +109,7 @@ const desktop = makeStyles({
     borderRadius: 0,
   },
   info: {
-    marginTop: '4vh',
+    marginTop: '1vh',
   },
   action: {
     padding: 0,
@@ -133,14 +127,14 @@ const desktop = makeStyles({
 
 const mobile = makeStyles({
   card: {
-    height: '94vh',
+    height: '92vh',
   },
   button: {
     width: '100%',
     padding: 20,
     borderRadius: 0,
-    position: 'absolute',
-    bottom: 0,
+    position: 'relative',
+    marginTop: '20%',
   },
   info: {
     marginTop: 10,

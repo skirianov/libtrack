@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogContent } from '@material-ui/core';
+import { Dialog, DialogContent, makeStyles } from '@material-ui/core';
 import { useMediaQuery } from 'react-responsive';
 import { useSelector } from 'react-redux';
 
@@ -9,11 +9,20 @@ import Registered from '../register-box/Registered';
 import BookAddition from '../book-addition/bookAddition';
 import SearchField from '../navBar/searchField/searchField';
 
+const useStyles = makeStyles({
+  content: {
+    width: 500,
+    height: 600,
+  },
+});
+
 const ModalComponent = ({
   showModal,
-  className,
+  size,
 }) => {
   const modalState = useSelector((state) => state.modal);
+  const isMobile = size < 720;
+  const classes = useStyles();
   const ModalView = () => {
     switch (modalState) {
       case 'login':
@@ -27,7 +36,7 @@ const ModalComponent = ({
       case 'registered':
         return <Registered />;
       case 'book-adding':
-        return <BookAddition />;
+        return <BookAddition isMobile={isMobile} />;
       case 'mobile-search':
         return <SearchField showModal={showModal} device={isMobile} />;
       default:
@@ -35,24 +44,17 @@ const ModalComponent = ({
     }
   };
 
-  const isDesktop = useMediaQuery({
-    minDeviceWidth: 1024,
-  });
-  const isMobile = useMediaQuery({
-    maxWidth: 600,
-  });
-
   const mobileDevice = isMobile ? 'mobile' : null;
 
   return (
     <Dialog
       open={!!modalState}
       onClose={() => showModal('CLOSE_MODAL', '')}
-      fullWidth={!!isMobile}
-      fullScreen={!!isMobile}
+      fullWidth={isMobile}
+      fullScreen={isMobile}
       style={{ backgroundColor: 'transparent' }}
     >
-      <DialogContent className={className}>
+      <DialogContent className={null}>
         <ModalView />
       </DialogContent>
     </Dialog>

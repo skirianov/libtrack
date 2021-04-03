@@ -7,7 +7,6 @@ const getBooks = async (query) => {
     // eslint-disable-next-line max-len
     .get(`${googleUrl}${query}&langRestrict=en`)
     .catch((error) => {
-      console.log(error);
     });
   if (receivedBooks) {
     return receivedBooks.data.items;

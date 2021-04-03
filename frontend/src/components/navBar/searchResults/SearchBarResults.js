@@ -30,7 +30,6 @@ const SearchBarResults = ({ showModal, books, setBooks }) => {
 
   const bookClicked = () => {
     showModal('BOOK_ADD', 'book-adding');
-    setBooks((prevState) => []);
   };
 
   return (

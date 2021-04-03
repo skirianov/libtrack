@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = '/api/books';
+const baseUrl = 'http://localhost:3001/api/books' || '/api/books';
 
 const getUserBooks = async (user) => {
   const response = await axios.get(baseUrl, { params: { user: user.id } });

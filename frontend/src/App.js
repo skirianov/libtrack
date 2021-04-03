@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router';
 import { useMediaQuery } from 'react-responsive';
@@ -15,26 +15,30 @@ const loggedIn = window.localStorage.getItem('userLoggedIn')
 const App = () => {
   const user = JSON.parse(loggedIn);
   const dispatch = useDispatch();
-  const isDesktop = useMediaQuery({
-    minDeviceWidth: 1024,
-  });
-  const isMobile = useMediaQuery({
-    maxWidth: 600,
-  });
 
-  const device = isDesktop ? 'desktop' : 'mobile';
+  const [size, setSize] = useState(0);
+  useEffect(() => {
+    function updateSize() {
+      setSize(window.innerWidth);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+  }, [size]);
 
-  dispatch(loggedInUserAction(user));
+  useEffect(() => {
+    dispatch(loggedInUserAction(user));
+  }, [user, dispatch]);
   return (
     <Switch>
       <Route path="/main">
-        <Home device={device} />
+        <Home size={size} />
       </Route>
       <Route
         path="/"
         exact
-        component={loggedIn ? Home : MainPage}
-      />
+      >
+        <MainPage size={size} />
+      </Route>
     </Switch>
   );
 };

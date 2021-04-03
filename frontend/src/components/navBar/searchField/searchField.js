@@ -8,16 +8,18 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import searchService from '../searchService';
 import SearchBarResults from '../searchResults/SearchBarResults';
 
-const SearchField = ({ showModal, device }) => {
+const SearchField = ({ showModal }) => {
   const modal = useSelector((state) => state.modal);
   const [books, setBooks] = useState([]);
   const [query, setQeury] = useState('');
   const classes = useStyles();
 
   useEffect(() => {
-    searchService.getBooks(query).then((received) => {
-      setBooks(received);
-    });
+    if (query !== '') {
+      searchService.getBooks(query).then((received) => {
+        setBooks(received);
+      });
+    }
   }, [query]);
 
   const handleQuery = ({ target }) => {
@@ -30,6 +32,7 @@ const SearchField = ({ showModal, device }) => {
         <SearchIcon />
       </div>
       <InputBase
+        autoFocus
         placeholder="Search…"
         classes={{
           root: classes.inputRoot,
@@ -39,7 +42,7 @@ const SearchField = ({ showModal, device }) => {
         inputProps={{ 'aria-label': 'search' }}
         onChange={handleQuery}
       />
-      {books ? <SearchBarResults showModal={showModal} books={books} device={device} setBooks={setBooks} /> : null}
+      {books ? <SearchBarResults showModal={showModal} books={books} setBooks={setBooks} /> : null}
     </div>
   );
 };

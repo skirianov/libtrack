@@ -8,7 +8,7 @@ import NavBar from '../navBar/NavBar';
 import booksService from '../books-list/booksServices';
 import { booksAction } from '../books-list/booksReducer';
 
-const Home = ({ device }) => {
+const Home = ({ size }) => {
   const [books, setBooks] = useState([]);
   const booksFromState = useSelector((state) => state.books);
   const showSearch = useSelector((state) => state.search);
@@ -29,7 +29,7 @@ const Home = ({ device }) => {
           dispatch(booksAction(receivedBooks));
         },
       );
-  }, []);
+  }, [user, dispatch]);
 
   useEffect(() => {
     setBooks(booksFromState);
@@ -37,16 +37,16 @@ const Home = ({ device }) => {
 
   return (
     <div>
-      <NavBar showModal={showModal} device={device} />
-      <BookList books={books} />
+      <NavBar showModal={showModal} size={size} />
+      <BookList books={books} size={size} />
       {showSearch === true ? (
         <ModalComponent
-          modalStatus={modalStatus}
+          size={size}
           showModal={showModal}
         />
       ) : (
         <ModalComponent
-          modalStatus={modalStatus}
+          size={size}
           showModal={showModal}
         />
       ) }
