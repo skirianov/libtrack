@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'https://blooming-brook-04733.herokuapp.com/api/books';
+const baseUrl = '/api/books';
 
 const getUserBooks = async (user) => {
   const response = await axios.get(baseUrl, { params: { user: user.id } });

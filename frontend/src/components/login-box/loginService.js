@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const baseUrl = 'https://blooming-brook-04733.herokuapp.com/api/users';
-const loginUrl = 'https://blooming-brook-04733.herokuapp.com/api/login';
+const baseUrl = '/api/users';
+const loginUrl = '/api/login';
 
 const registerNewUser = async (user) => {
   const response = await axios.post(baseUrl, user);

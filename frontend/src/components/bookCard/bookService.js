@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'https://blooming-brook-04733.herokuapp.com/api/books';
+const baseUrl = '/api/books';
 let token = null;
 
 const setToken = (newToken) => {
