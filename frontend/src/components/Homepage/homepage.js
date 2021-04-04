@@ -12,7 +12,7 @@ import { modalAction } from '../modal/modalReducer';
 
 import home from '/home/sergii/projects/dev/libtrack/frontend/src/images/reading-homepage.svg';
 
-const MainPage = ({ size }) => {
+const HomePage = ({ size }) => {
   const classesMobile = mobile();
   const classesTablet = tablet();
   const classesDesktop = desktop();
@@ -61,7 +61,7 @@ const MainPage = ({ size }) => {
   );
 };
 
-export default MainPage;
+export default HomePage;
 
 const desktop = makeStyles({
   header: {

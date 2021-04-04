@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import Button from '@material-ui/core/Button';
+import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -12,7 +11,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import { useHistory } from 'react-router-dom';
 
-import { logoutUserAction } from '../login-box/loggedInUserReducer';
+import { logoutUserAction } from '../Login/loggedInUserReducer';
 
 import { drawerAction } from './drawerReducer';
 
@@ -25,7 +24,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Drawer = () => {
+const DrawerComponent = () => {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
   const classes = useStyles();
   const drawer = useSelector((state) => state.drawer);
@@ -63,7 +62,7 @@ const Drawer = () => {
 
   return (
     <div>
-      <SwipeableDrawer
+      <Drawer
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
         open={drawer}
@@ -71,9 +70,9 @@ const Drawer = () => {
         onOpen={() => dispatch(drawerAction(true))}
       >
         {list('left')}
-      </SwipeableDrawer>
+      </Drawer>
     </div>
   );
 };
 
-export default Drawer;
+export default DrawerComponent;

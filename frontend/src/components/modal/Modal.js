@@ -1,20 +1,12 @@
 import React from 'react';
 import { Dialog, DialogContent, makeStyles } from '@material-ui/core';
-import { useMediaQuery } from 'react-responsive';
 import { useSelector } from 'react-redux';
 
-import Login from '../login-box/Login';
+import Login from '../Login/Login';
 import Register from '../register-box/Register';
 import Registered from '../register-box/Registered';
-import BookAddition from '../book-addition/bookAddition';
+import BookAddition from '../books/book-addition/bookAddition';
 import SearchField from '../navBar/searchField/searchField';
-
-const useStyles = makeStyles({
-  content: {
-    width: 500,
-    height: 600,
-  },
-});
 
 const ModalComponent = ({
   showModal,
@@ -22,7 +14,6 @@ const ModalComponent = ({
 }) => {
   const modalState = useSelector((state) => state.modal);
   const isMobile = size < 720;
-  const classes = useStyles();
   const ModalView = () => {
     switch (modalState) {
       case 'login':

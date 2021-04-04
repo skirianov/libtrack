@@ -1,10 +1,18 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001/api/books' || '/api/books';
+const baseUrl = '/api/books';
 let token = null;
 
 const setToken = (newToken) => {
   token = `bearer ${newToken}`;
+};
+
+const addBook = async (book) => {
+  const header = {
+    headers: { Authorization: token },
+  };
+  const savedBook = await axios.post(baseUrl, book, header);
+  return savedBook;
 };
 
 const updateBook = async (book) => {
@@ -23,10 +31,17 @@ const deleteBook = async (book) => {
   await axios.delete(`${baseUrl}/${book.id}`);
 };
 
-const bookService = {
+const getUserBooks = async (user) => {
+  const response = await axios.get(baseUrl, { params: { user: user.id } });
+  return response.data;
+};
+
+const booksServices = {
+  addBook,
   updateBook,
   deleteBook,
+  getUserBooks,
   setToken,
 };
 
-export default bookService;
+export default booksServices;

@@ -1,13 +1,12 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router';
-import { useMediaQuery } from 'react-responsive';
 import './App.sass';
 
-import MainPage from './components/mainPage/mainPage';
-import Home from './components/home/Home';
-import { loggedInUserAction } from './components/login-box/loggedInUserReducer';
+import HomePage from './components/Homepage/homepage';
+import Main from './components/Main/Main';
+import { loggedInUserAction } from './components/Login/loggedInUserReducer';
 
 const loggedIn = window.localStorage.getItem('userLoggedIn')
 || window.sessionStorage.getItem('sessionUser');
@@ -31,13 +30,13 @@ const App = () => {
   return (
     <Switch>
       <Route path="/main">
-        <Home size={size} />
+        <Main size={size} />
       </Route>
       <Route
         path="/"
         exact
       >
-        <MainPage size={size} />
+        <HomePage size={size} />
       </Route>
     </Switch>
   );

@@ -9,13 +9,11 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { useSelector, useDispatch } from 'react-redux';
-import { useMediaQuery } from 'react-responsive';
 
-import Selector from '../selector/Selector';
-import { modalAction } from '../modal/modalReducer';
+import Selector from '../../selector/Selector';
+import { modalAction } from '../../modal/modalReducer';
+import booksServices from '../bookService';
 import { booksAction } from '../books-list/booksReducer';
-
-import booksAddServices from './booksAdditionService';
 
 const BookAddition = ({ isMobile }) => {
   const [status, setStatus] = useState('Not read');
@@ -31,7 +29,7 @@ const BookAddition = ({ isMobile }) => {
   const user = useSelector((state) => state.user);
 
   const addToLibrary = async () => {
-    booksAddServices.setToken(user.token);
+    booksServices.setToken(user.token);
     const newBook = {
       title: book.title,
       author: book.authors ? book.authors[0] : 'No author',
@@ -41,7 +39,7 @@ const BookAddition = ({ isMobile }) => {
     };
 
     dispatch(modalAction('CLOSE_MODAL', ''));
-    const savedBook = await booksAddServices.addBook(newBook);
+    const savedBook = await booksServices.addBook(newBook);
     dispatch(booksAction(books.concat(savedBook.data)));
   };
 

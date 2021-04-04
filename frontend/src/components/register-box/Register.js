@@ -7,7 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 import Button from '../button/Button';
 import Progress from '../progress/Progress';
-import loginService from '../login-box/loginService';
+import loginService from '../Login/loginService';
 import { modalAction } from '../modal/modalReducer';
 
 const useStyles = makeStyles({

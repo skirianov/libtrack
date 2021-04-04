@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import BookList from '../books-list/booksList';
+import BookList from '../books/books-list/booksList';
 import ModalComponent from '../modal/Modal';
 import { modalAction } from '../modal/modalReducer';
 import NavBar from '../navBar/NavBar';
-import booksService from '../books-list/booksServices';
-import { booksAction } from '../books-list/booksReducer';
+import { booksAction } from '../books/books-list/booksReducer';
+import booksService from '../books/bookService';
 
-const Home = ({ size }) => {
+const Main = ({ size }) => {
   const [books, setBooks] = useState([]);
   const booksFromState = useSelector((state) => state.books);
   const showSearch = useSelector((state) => state.search);
-  const modalStatus = useSelector((state) => state.modal);
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
@@ -54,4 +53,4 @@ const Home = ({ size }) => {
   );
 };
 
-export default Home;
+export default Main;
